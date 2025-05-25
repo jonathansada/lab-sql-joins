@@ -20,6 +20,13 @@ FROM `store` as st
 	INNER JOIN payment ON rental.rental_id = payment.rental_id
 GROUP BY st.store_id;
 
+-- Alternative approach
+SELECT st.store_id, SUM(payment.amount) as total_revenue
+FROM store as st 
+	INNER JOIN staff ON st.store_id = staff.store_id
+	INNER JOIN payment ON staff.staff_id = payment.staff_id
+GROUP BY st.store_id;
+
 -- 4. Determine the average running time of films for each category.
 SELECT c.name as category, AVG(f.length) as running_time
 FROM film as f
@@ -35,7 +42,7 @@ FROM film as f
 	INNER JOIN film_category as fc ON f.film_id = fc.film_id
 	INNER JOIN category as c ON fc.category_id = c.category_id
 GROUP BY c.category_id
-ORDER BY running_time
+ORDER BY running_time DESC
 LIMIT 5;
 
 -- 6. Display the top 10 most frequently rented movies in descending order.
